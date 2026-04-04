@@ -1,4 +1,4 @@
-# dengue_descartados
+# Algoritmo de avaliação de casos descartados de dengue
 
 Este projeto realiza o processamento e análise epidemiológica de dados de casos notificados de Dengue no Brasil, com foco específico na avaliação dos casos descartados e na qualidade da classificação final.
 
