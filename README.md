@@ -1,53 +1,72 @@
-# Algoritmo de avaliação de casos descartados de dengue
+#### Algoritmo para análise e validação de critérios de descarte de casos notificados de Febre do Chikungunya
 
-Este projeto realiza o processamento e análise epidemiológica de dados de casos notificados de Dengue no Brasil, com foco específico na avaliação dos casos descartados e na qualidade da classificação final.
+O projeto automatiza a auditoria e a validação dos critérios de encerramento de casos notificados de Chikungunya. O objetivo principal é apoiar a vigilância na identificação de inconsistências nos registros do SINAN, separando os casos que foram descartados corretamente daqueles que possuem sintomas clínicos evidentes e exames ausentes ou fora do prazo oportuno.
 
-## Fonte de Dados
+Com esta ferramenta, equipes de saúde pública conseguem auditar grandes volumes de dados rapidamente, garantindo que nenhum caso suspeito real seja descartado de maneira inadequada,
 
-As bases de dados utilizadas neste projeto são provenientes do **SINAN (Sistema de Informação de Agravos de Notificação)**, abrangendo o período de 2020 a 2024. O sistema é a principal fonte de dados para vigilância epidemiológica no Brasil.
+Um caso de suspeito só deve ser descartado se houver uma justificativa clínica ou laboratorial sólida. No entanto, erros de preenchimento e na investigação podem fazer com que casos com sintomas clássicos e sem exames laboratoriais acabem recebendo o status de descartado.
 
-## Análises Realizadas
+O script lê a base de dados bruta de notificações (chikon.dbf) e categoriza os registros em três frentes:
 
-O código permite realizar as seguintes análises estruturadas:
+1. Critério Clínico-Epidemiológico: Verifica se o paciente tinha febre e dores nas articulações, mas o exame não foi realizado.
 
-### 1. Processamento e Consolidação de Dados
-- **Concatenação de Bases Anuais**: Integração automática de múltiplos arquivos Excel (`den_2020.xlsx` a `den_2024.xlsx`) em um único DataFrame consolidado.
-- **Limpeza de Dados**: Remoção automatizada de mais de 100 colunas administrativas e de variáveis de confundimento para otimizar o processamento e focar em variáveis epidemiológicas chave.
+2. Critério Laboratorial: Avalia se o exame de PCR foi coletado no tempo correto (até 8 dias do início dos sintomas) e se o resultado justifica o descarte.
 
-### 2. Análise Geral de Notificações
-- **Contagem de Agravos**: Quantificação total de notificações por tipo de agravo.
-- **Classificação Final**: Distribuição dos casos por classificação final (Confirmados vs. Descartados).
-- **Série Temporal**: Evolução anual das notificações com visualização em gráficos de barras empilhadas para comparar proporções de classificação ao longo dos anos.
+3. Casos em Investigação: Analisa os registros que ainda estão abertos para identificar quais já reúnem critérios para avaliação imediata.
 
-### 3. Avaliação de Critérios de Descarte (Qualidade da Vigilância)
-O projeto implementa uma lógica rigorosa para avaliar se os casos foram descartados corretamente segundo os protocolos de vigilância:
+Ao final, o programa gera um relatório consolidado em Excel indicando se o descarte de cada caso foi Adequado ou Não Adequado (inconsistente).
 
-- **Descarte Sem Critério**: Identificação de casos que foram descartados (`CLASSI_FIN == 5`), mas que apresentavam quadro clínico compatível (febre + pelo menos 2 outros sintomas) e não tiveram exames laboratoriais (Sorologia, NS1 ou PCR) realizados ou registrados.
-- **Análise por Critério de Encerramento**: Comparação entre casos descartados por critério Laboratorial vs. Clínico-Epidemiológico.
-- **Frequência de Sintomas**: Análise da prevalência de sintomas (Febre, Mialgia, Cefaleia, Exantema, Vômito, Náusea, Artralgia, Petéquias, Prova do Laço, Dor Retro-orbital) entre os casos suspeitos que foram posteriormente descartados.
+#### Pipeline Análise
 
-### 4. Perfil Demográfico e Geográfico dos Casos Descartados
-- **Análise por Sexo**: Distribuição de casos descartados entre homens e mulheres.
-- **Zona de Residência**: Avaliação da ocorrência de descartes em áreas Urbanas vs. Rurais.
-- **Ranking Municipal**: Identificação dos 10 municípios com maior número de casos descartados, segmentados por critério de encerramento (Laboratorial e Clínico-Epidemiológico).
+[Dados Brutos: chikon.xlsx]
+          │
+          ▼
+ [Limpeza do Banco de Dados] ──> Remove dados pessoais/irrelevantes
+          │
+          ▼
+ ┌────────┴──────────────────────────┐
+ │ Classificação por Grupos (Regras) │
+ └────────┬──────────────────────────┘
+          ├─> 1. Clínico-Epidemiológico (Filtra Critério 2 + Descartados)
+          ├─> 2. Laboratorial (Filtra Critério 1 + Descartados)
+          └─> 3. Em Investigação (Filtra os casos sem encerramento)
+          │
+          ▼
+[Geração do Relatório Final: chik_descartados_total.xlsx]
 
-### 5. Indicadores de Oportunidade
-- **Tempo Médio de Encerramento**: Cálculo da diferença em dias entre a data de notificação (`DT_NOTIFIC`) e a data de encerramento (`DT_ENCERRA`), permitindo avaliar a agilidade do serviço de vigilância local.
+Importante!
+O arquivo Chikon, baixado no formato [dbf], deve ser convertido em Pasta de Trabalho Excel [.xlsx] com o nome chikon_[siglaestado].xlsx
 
-## Tecnologias Utilizadas
-- **Python 3.x**
-- **Pandas**: Manipulação e tratamento de dados.
-- **Matplotlib**: Geração de visualizações gráficas.
-- **Openpyxl**: Manipulação de arquivos Excel com múltiplas abas.
+#### Preparação do ambiente
+1 - Instalar o Python 3
+2 - Instalar bibliotecas [pip install pandas numpy openpyxl notebook]
+3 - Excel
+4 - Editor de código (VS Code, Anaconda, Google Colab)
 
-## Como Executar
-1. Certifique-se de que os arquivos `den_2020.xlsx` a `den_2024.xlsx` estejam no mesmo diretório do script.
-2. Execute o notebook `den_descartados.ipynb`.
-3. O script gerará arquivos de saída consolidados:
-   - `den_2020_2024_total.xlsx`
-   - `descartados_2020_2024_lab.xlsx`
-   - `descartados_2020_2024_clepi.xlsx`
-   - `den_descartados_criterios_avaliacao.xlsx`
+#### Execução do Projeto
+Organize seus arquivos: Certifique-se de que o arquivo bruto (extensão .xlsx) esteja na mesma pasta que o arquivo do código (chik_descartados.ipynb).
 
----
-*Este script foi desenvolvido para apoiar a análise técnica de vigilância epidemiológica, visando identificar potenciais falhas no descarte de casos suspeitos de arboviroses.*
+#### Arquivos Gerados
+Após o término da execução, o programa salvará automaticamente os seguintes arquivos na sua pasta:
+
+chikon_notificados.xlsx: Uma versão limpa da base original, mantendo apenas as colunas essenciais para a epidemiologia.
+
+chik_descartados_total.xlsx: O relatório final contém 4 abas (Planilhas):
+
+clinico_epidemiologico: Casos encerrados por este critério, com a coluna DESCARTE_CRITERIO indicando se foi adequado ou não.
+
+laboratorial: Casos encerrados por laboratório, detalhando a diferença de dias entre os sintomas e a coleta (DIF_DIAS) e se a coleta foi oportuna (DIAG_OPORTUNO).
+
+investigacao: Casos que ainda não foram fechados no sistema, sinalizando quais já precisam de avaliação.
+
+notificados: A base consolidada de suporte.
+
+#### Regra aplicada a adequabilidade do descarte
+1 - Caso Suspeito Padrão: Paciente que apresenta Febre (FEBRE == 1) E manifestação articular, que pode ser Artralgia (ARTRALGIA == 1) OU Artrite (ARTRITE == 1).
+
+2 - Descarte Não Adequado (Inconsistente): Se o paciente se encaixa na definição de caso suspeito acima, mas o exame de PCR consta como Não Realizado ou está em branco, o sistema classifica como n_adequado, pois faltam subsídios para descartar o caso.
+
+Período Oportuno (Laboratorial): O cálculo da diferença de dias entre a Data de Início dos Sintomas (DT_SIN_PRI) e a Data da Coleta do PCR (DT_PCR) deve ser de 0 a 8 dias. Se um caso foi descartado com exame negativo colhido fora desse prazo (ex: no 12º dia), o sistema acusará como n_adequado, exigindo revisão da vigilância.
+
+Algoritmo desenvolvido por Dengue Brazil
+Pode ser utilizado livremente, desde que citada a fonte.
