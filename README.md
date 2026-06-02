@@ -1,4 +1,4 @@
-#### Algoritmo para análise e validação de critérios de descarte de casos notificados de Febre do Chikungunya
+## Algoritmo para análise e validação de critérios de descarte de casos notificados de Febre do Chikungunya
 
 O projeto automatiza a auditoria e a validação dos critérios de encerramento de casos notificados de Chikungunya. O objetivo principal é apoiar a vigilância na identificação de inconsistências nos registros do SINAN, separando os casos que foram descartados corretamente daqueles que possuem sintomas clínicos evidentes e exames ausentes ou fora do prazo oportuno.
 
@@ -6,15 +6,23 @@ Com esta ferramenta, equipes de saúde pública conseguem auditar grandes volume
 
 Um caso de suspeito só deve ser descartado se houver uma justificativa clínica ou laboratorial sólida. No entanto, erros de preenchimento e na investigação podem fazer com que casos com sintomas clássicos e sem exames laboratoriais acabem recebendo o status de descartado.
 
-O script lê a base de dados bruta de notificações (chikon.dbf) e categoriza os registros em três frentes:
+Para o correto descarte, é importante determinar a definição de caso suspeito e confirmado de Febre do Chikungunya. De acordo com o Ministério da Saúde (2026) 
 
-1. Critério Clínico-Epidemiológico: Verifica se o paciente tinha febre e dores nas articulações, mas o exame não foi realizado.
+Caso suspeito: "trata-se do indivíduo que apresenta febre de início súbito, acompanhada de artralgia ou artrite intensa (dor nas articulações) de início agudo, não explicado por outras condições, residente em (ou que tenha visitado) áreas com transmissão até duas semanas antes de começar os sintomas, ou que tenha vínculo epidemiológico com caso confirmado".
 
-2. Critério Laboratorial: Avalia se o exame de PCR foi coletado no tempo correto (até 8 dias do início dos sintomas) e se o resultado justifica o descarte.
+Caso Confirmado: É todo caso suspeito que foi confirmado por critério laboratorial, ou clínico-epidemiológico. O caso confirmado por critério laboratorial é aquele que obteve resultado laboratorial positivo, por isolamento viral, ou, detecção de RNA viral por RT-PCR (em amostra coletada até o 8º dia de início dos sintomas) ou detecção de anticorpos IgM em uma única amostra de soro durante a fase aguda (a partir do 6º dia de início dos sintomas), ou convalescente (15 dias após o início dos sintomas), demonstração de soro conversão entre as amostras na fase aguda (1ª amostra) e convalescente (2ª amostra) ou detecção de anticorpos IgG em amostras coletadas de pacientes na fase crônica da doença, com clínica sugestiva. O caso confirmado por critério clínico epidemiológico é aquele que atende a definição de caso suspeito, e que tenha vínculo familiar, ou espaço-temporal (vínculo epidemiológico) com caso confirmado laboratorialmente.
+
+Assim, o script lê a base de dados bruta de notificações (chikon.dbf) e categoriza os registros em três frentes:
+
+1. Investigação Clínico-Epidemiológico: Verifica se o paciente tinha febre e dores nas articulações, mas o exame não foi realizado.
+
+2. Investigação Laboratorial: Avalia se o exame de PCR foi coletado no tempo correto (até 8 dias do início dos sintomas) e se o resultado justifica o descarte.
 
 3. Casos em Investigação: Analisa os registros que ainda estão abertos para identificar quais já reúnem critérios para avaliação imediata.
 
 Ao final, o programa gera um relatório consolidado em Excel indicando se o descarte de cada caso foi Adequado ou Não Adequado (inconsistente).
+
+O script também faz uma análise dos casos comparando o número de casos confirmados e descartados por bairro (NM_BAIRRO), visando identificar zonas quentes de transmissão dentro do território e possíveis falhas no fluxo assistencial, de acordo com o padrão de descarte dos casos suspeitos.
 
 #### Pipeline Análise
 
