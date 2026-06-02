@@ -26,20 +26,12 @@ O script também faz uma análise dos casos comparando o número de casos confir
 
 #### Pipeline Análise
 
-[Dados Brutos: chikon.xlsx]
-          │
-          ▼
- [Limpeza do Banco de Dados] ──> Remove dados pessoais/irrelevantes
-          │
-          ▼
- ┌────────┴──────────────────────────┐
- │ Classificação por Grupos (Regras) │
- └────────┬──────────────────────────┘
-          ├─> 1. Clínico-Epidemiológico (Filtra Critério 2 + Descartados)
-          ├─> 2. Laboratorial (Filtra Critério 1 + Descartados)
-          └─> 3. Em Investigação (Filtra os casos sem encerramento)
-          │
-          ▼
+[Dados Brutos: chikon.xlsx] > 
+[Limpeza do Banco de Dados] (Remove dados irrelevantes) > 
+Classificação por Grupos (Regras): 
+1. Clínico-Epidemiológico (Filtra Critério 2 + Descartados)
+2. Laboratorial (Filtra Critério 1 + Descartados)
+3. Em Investigação (Filtra os casos sem encerramento) >
 [Geração do Relatório Final: chik_descartados_total.xlsx]
 
 Importante!
