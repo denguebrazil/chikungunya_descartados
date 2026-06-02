@@ -26,22 +26,22 @@ O script também faz uma análise dos casos comparando o número de casos confir
 
 #### Pipeline Análise
 
-[Dados Brutos: chikon.xlsx] > 
-[Limpeza do Banco de Dados] (Remove dados irrelevantes) > 
-Classificação por Grupos (Regras): 
-1. Clínico-Epidemiológico (Filtra Critério 2 + Descartados)
-2. Laboratorial (Filtra Critério 1 + Descartados)
-3. Em Investigação (Filtra os casos sem encerramento) >
-[Geração do Relatório Final: chik_descartados_total.xlsx]
+1. [Dados Brutos: chikon.xlsx] > 
+2. [Limpeza do Banco de Dados] (Remove dados irrelevantes) > 
+3. Classificação por Grupos (Regras): 
+- Clínico-Epidemiológico (Filtra Critério 2 + Descartados)
+- Laboratorial (Filtra Critério 1 + Descartados)
+- Em Investigação (Filtra os casos sem encerramento) >
+4. [Geração do Relatório Final: chik_descartados_total.xlsx]
 
 Importante!
 O arquivo Chikon, baixado no formato [dbf], deve ser convertido em Pasta de Trabalho Excel [.xlsx] com o nome chikon_[siglaestado].xlsx
 
 #### Preparação do ambiente
-1 - Instalar o Python 3
-2 - Instalar bibliotecas [pip install pandas numpy openpyxl notebook]
-3 - Excel
-4 - Editor de código (VS Code, Anaconda, Google Colab)
+- Instalar o Python 3;
+- Instalar bibliotecas [pip install pandas numpy openpyxl notebook];
+- Microsoft Excel;
+- Editor de código (VS Code, Anaconda, Google Colab).
 
 #### Execução do Projeto
 Organize seus arquivos: Certifique-se de que o arquivo bruto (extensão .xlsx) esteja na mesma pasta que o arquivo do código (chik_descartados.ipynb).
@@ -53,13 +53,13 @@ chikon_notificados.xlsx: Uma versão limpa da base original, mantendo apenas as 
 
 chik_descartados_total.xlsx: O relatório final contém 4 abas (Planilhas):
 
-clinico_epidemiologico: Casos encerrados por este critério, com a coluna DESCARTE_CRITERIO indicando se foi adequado ou não.
+- clinico_epidemiologico: Casos encerrados por este critério, com a coluna DESCARTE_CRITERIO indicando se foi adequado ou não.
 
-laboratorial: Casos encerrados por laboratório, detalhando a diferença de dias entre os sintomas e a coleta (DIF_DIAS) e se a coleta foi oportuna (DIAG_OPORTUNO).
+- laboratorial: Casos encerrados por laboratório, detalhando a diferença de dias entre os sintomas e a coleta (DIF_DIAS) e se a coleta foi oportuna (DIAG_OPORTUNO).
 
-investigacao: Casos que ainda não foram fechados no sistema, sinalizando quais já precisam de avaliação.
+- investigacao: Casos que ainda não foram fechados no sistema, sinalizando quais já precisam de avaliação.
 
-notificados: A base consolidada de suporte.
+- notificados: A base consolidada de suporte.
 
 #### Regra aplicada a adequabilidade do descarte
 1 - Caso Suspeito Padrão: Paciente que apresenta Febre (FEBRE == 1) E manifestação articular, que pode ser Artralgia (ARTRALGIA == 1) OU Artrite (ARTRITE == 1).
@@ -68,5 +68,4 @@ notificados: A base consolidada de suporte.
 
 Período Oportuno (Laboratorial): O cálculo da diferença de dias entre a Data de Início dos Sintomas (DT_SIN_PRI) e a Data da Coleta do PCR (DT_PCR) deve ser de 0 a 8 dias. Se um caso foi descartado com exame negativo colhido fora desse prazo (ex: no 12º dia), o sistema acusará como n_adequado, exigindo revisão da vigilância.
 
-Algoritmo desenvolvido por Dengue Brazil
-Pode ser utilizado livremente, desde que citada a fonte.
+Algoritmo desenvolvido em colaboração por: Pedro Araújo & Bárbara Araújo. Pode ser utilizado livremente, desde que citada a fonte.
