@@ -68,4 +68,4 @@ chik_descartados_total.xlsx: O relatório final contém 4 abas (Planilhas):
 
 Período Oportuno (Laboratorial): O cálculo da diferença de dias entre a Data de Início dos Sintomas (DT_SIN_PRI) e a Data da Coleta do PCR (DT_PCR) deve ser de 0 a 8 dias. Se um caso foi descartado com exame negativo colhido fora desse prazo (ex: no 12º dia), o sistema acusará como n_adequado, exigindo revisão da vigilância.
 
-Algoritmo desenvolvido em colaboração por: Pedro Araújo & Bárbara Araújo. Pode ser utilizado livremente, desde que citada a fonte.
+Algoritmo desenvolvido por Dengue Brazil em colaboração com Bárbara Araújo. Pode ser utilizado livremente, desde que citada a fonte.
